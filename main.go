@@ -3,12 +3,12 @@ package main
 import (
 	"os"
 	"github.com/gofiber/fiber/v2"
-	"codeberg.org/aryak/raga-proxy/utils"
+	"github.com/valiantlynx/raga-backend/utils"
 )
 
 func main() {
 	app := fiber.New(fiber.Config{
-		AppName:                 "raga-proxy",
+		AppName:                 "raga-backend",
 		EnableTrustedProxyCheck: true,
 		TrustedProxies:          []string{"0.0.0.0/0"},
 		ProxyHeader:             fiber.HeaderXForwardedFor,

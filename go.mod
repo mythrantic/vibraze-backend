@@ -1,4 +1,4 @@
-module codeberg.org/aryak/raga-proxy
+module github.com/valiantlynx/raga-backend
 
 go 1.19
 
