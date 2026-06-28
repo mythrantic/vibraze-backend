@@ -1,1 +1,6 @@
 /raga-backend
+dokploy-mcp/
+opencode.json
+*.db
+*.db-shm
+*.db-wal
