@@ -12,7 +12,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/valiantlynx/raga-backend/db"
+	"github.com/mythrantic/vibraze-backend/db"
 )
 
 // NowPlaying holds the currently playing track info. Thread-safe.
@@ -415,5 +415,4 @@ func corsMiddleware(c *fiber.Ctx) error {
 	}
 	return c.Next()
 }
-
 

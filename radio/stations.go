@@ -9,7 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/valiantlynx/raga-backend/db"
+	"github.com/mythrantic/vibraze-backend/db"
 )
 
 const radioBrowserBaseURL = "https://de1.api.radio-browser.info/json"
@@ -236,4 +236,3 @@ func (r *Radio) HandleFavorites(c *fiber.Ctx) error {
 		"count":     len(favorites),
 	})
 }
-

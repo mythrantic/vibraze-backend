@@ -1,4 +1,4 @@
-module github.com/valiantlynx/raga-backend
+module github.com/mythrantic/vibraze-backend
 
 go 1.21
 

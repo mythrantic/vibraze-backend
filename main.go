@@ -6,9 +6,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	log "github.com/sirupsen/logrus"
 
-	"github.com/valiantlynx/raga-backend/db"
-	"github.com/valiantlynx/raga-backend/radio"
-	"github.com/valiantlynx/raga-backend/utils"
+	"github.com/mythrantic/vibraze-backend/db"
+	"github.com/mythrantic/vibraze-backend/radio"
+	"github.com/mythrantic/vibraze-backend/utils"
 )
 
 func main() {

@@ -3,7 +3,7 @@
 ## Project
 
 Go backend for music streaming: CDN reverse proxy + radio station logic. Uses GoFiber v2 + SQLite.
-Module: `github.com/valiantlynx/raga-backend`. Runs on port 3000 (override with `RAGA_PROXY_PORT`).
+Module: `github.com/mythrantic/vibraze-backend`. Runs on port 3000 (override with `RAGA_PROXY_PORT`).
 
 ## Build & Run
 
@@ -95,7 +95,7 @@ GitHub Actions (`.github/workflows/raga-backend.yaml`): builds Docker image, pus
 
 ## Gotchas
 
-- The Go module name (`raga-backend`) differs from the git remote name (`vibraze-backend`). Import paths use `github.com/valiantlynx/raga-backend`.
+- The Go module path is `github.com/mythrantic/vibraze-backend`, which now matches the current GitHub repo.
 - `modernc.org/sqlite` is pure Go (no CGO) — builds with `CGO_ENABLED=0` work fine.
 - Liquidsoap expects file paths as seen inside its Docker container (`/music/...`), which must match what the Go backend stores in SQLite. Both containers mount the same host `./music` directory to `/music`.
 - The Icecast poller logs at DEBUG level when Icecast is unreachable (expected during startup).
