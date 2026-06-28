@@ -397,6 +397,7 @@ func (r *Radio) SetupRoutes(app *fiber.App) {
 	api.Get("/stations/top", r.HandleTopStations)
 	api.Get("/stations/countries", r.HandleCountries)
 	api.Get("/stations/tags", r.HandleTags)
+	api.Get("/stations/stream", r.HandleStationStream)
 	api.Get("/stations/favorites", r.HandleFavorites)
 	api.Post("/stations/favorite", r.HandleStationFavorite)
 	api.Delete("/stations/favorite", r.HandleStationFavorite)
@@ -415,5 +416,4 @@ func corsMiddleware(c *fiber.Ctx) error {
 	}
 	return c.Next()
 }
-
 
