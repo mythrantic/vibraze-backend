@@ -1,4 +1,5 @@
 /raga-backend
+.build/
 dokploy-mcp/
 opencode.json
 *.db
