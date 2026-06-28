@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -18,63 +17,6 @@ const radioBrowserBaseURL = "https://de1.api.radio-browser.info/json"
 // stationsClient is a shared HTTP client for radio-browser.info API calls.
 var stationsClient = &http.Client{
 	Timeout: 10 * time.Second,
-}
-
-// HandleStationStream proxies a station stream so the frontend can consume it
-// with a stable CORS policy and use the Web Audio API for visualization.
-// GET /api/radio/stations/stream?url=https://...
-func (r *Radio) HandleStationStream(c *fiber.Ctx) error {
-	streamURL := c.Query("url")
-	if streamURL == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "url query parameter is required",
-		})
-	}
-
-	parsed, err := url.Parse(streamURL)
-	if err != nil || (parsed.Scheme != "http" && parsed.Scheme != "https") {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "url must be a valid http or https URL",
-		})
-	}
-
-	req, err := http.NewRequest("GET", streamURL, nil)
-	if err != nil {
-		log.Errorf("Failed to create stream proxy request: %v", err)
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "failed to build stream request",
-		})
-	}
-	req.Header.Set("User-Agent", "vibraze-radio/1.0")
-
-	resp, err := stationsClient.Do(req)
-	if err != nil {
-		log.Errorf("Failed to reach station stream: %v", err)
-		return c.Status(fiber.StatusBadGateway).JSON(fiber.Map{
-			"error": "failed to reach station stream",
-		})
-	}
-	defer resp.Body.Close()
-
-	if contentType := resp.Header.Get("Content-Type"); contentType != "" {
-		c.Set("Content-Type", contentType)
-	}
-	if icyName := resp.Header.Get("Icy-Name"); icyName != "" {
-		c.Set("Icy-Name", icyName)
-	}
-	if icyGenre := resp.Header.Get("Icy-Genre"); icyGenre != "" {
-		c.Set("Icy-Genre", icyGenre)
-	}
-	c.Set("Cache-Control", "no-store")
-	c.Set("X-Accel-Buffering", "no")
-	c.Status(resp.StatusCode)
-
-	_, err = io.Copy(c.Response().BodyWriter(), resp.Body)
-	if err != nil {
-		log.Debugf("Stream proxy closed: %v", err)
-	}
-
-	return nil
 }
 
 // radioBrowserGet performs a GET request to the radio-browser.info API and
@@ -294,3 +236,4 @@ func (r *Radio) HandleFavorites(c *fiber.Ctx) error {
 		"count":     len(favorites),
 	})
 }
+
