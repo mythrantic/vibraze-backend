@@ -1,1 +1,8 @@
-/raga-proxy
+/raga-backend
+.build/
+dokploy-mcp/
+opencode.json
+*.db
+*.db-shm
+*.db-wal
+music/
