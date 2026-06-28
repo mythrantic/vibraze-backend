@@ -1,0 +1,57 @@
+# Radio stack: Icecast + Liquidsoap + Go backend (extended)
+# Run from vibraze-backend/: docker compose -f docker-compose.radio.yml up -d --build
+
+services:
+  icecast:
+    image: infiniteproject/icecast:latest
+    container_name: radio_icecast
+    ports:
+      - "8000:8000"
+    environment:
+      - ICECAST_SOURCE_PASSWORD=radio_source_secret
+      - ICECAST_ADMIN_PASSWORD=radio_admin_secret
+      - ICECAST_PASSWORD=radio_relay_secret
+      - ICECAST_HOSTNAME=localhost
+    restart: unless-stopped
+    networks:
+      - radio
+
+  liquidsoap:
+    image: savonet/liquidsoap:v2.2.5
+    container_name: radio_liquidsoap
+    depends_on:
+      - icecast
+      - backend
+    volumes:
+      - ./radio.liq:/etc/liquidsoap/radio.liq:ro
+      - ./music:/music:ro
+    entrypoint: ["liquidsoap", "/etc/liquidsoap/radio.liq"]
+    restart: unless-stopped
+    networks:
+      - radio
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.radio
+    container_name: radio_backend
+    ports:
+      - "3080:3000"
+    environment:
+      - RAGA_MUSIC_DIR=/music
+      - RAGA_DB_PATH=/data/radio.db
+      - RAGA_ICECAST_URL=http://icecast:8000
+      - RAGA_PROXY_PORT=3000
+    volumes:
+      - ./music:/music:ro
+      - radio_data:/data
+    restart: unless-stopped
+    networks:
+      - radio
+
+volumes:
+  radio_data:
+
+networks:
+  radio:
+    driver: bridge

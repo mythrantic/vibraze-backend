@@ -18,6 +18,9 @@ RAGA_MUSIC_DIR=./music RAGA_DB_PATH=./radio.db ./.build/raga-backend
 docker build -f Dockerfile.radio -t raga-backend .
 docker run -p 3000:3000 -v ./music:/music raga-backend
 
+# Full radio stack (Icecast + Liquidsoap + backend)
+docker compose -f docker-compose.radio.yml up -d --build
+
 # Legacy Docker (requires pre-built binary in .build/)
 docker-compose up -d
 ```
@@ -79,6 +82,7 @@ Files are parsed from filename: `Artist - Title.ext` pattern. Supported: `.mp3`,
 |---|---|
 | `main.go`, `utils/`, `db/`, `radio/` | Application source |
 | `Dockerfile.radio` | Multi-stage build (preferred for radio stack) |
+| `docker-compose.radio.yml`, `radio.liq` | Self-hosted radio infra (Icecast + Liquidsoap) |
 | `Dockerfile` | Legacy Alpine + pre-built binary |
 | `terraform/` | AWS EC2 + Cloudflare DNS infra (region: `eu-north-1`) |
 | `ansible/` | Production deployment: Docker, nginx, SSL, monitoring |
